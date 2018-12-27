@@ -3,7 +3,7 @@
         "tslint:recommended", "tslint-config-prettier"
     ],
     "rules": {
-        "interface-name": false,
+        "interface-name": true,
         "max-line-length": [
             true,
             100
@@ -16,9 +16,9 @@
         ],
         "no-string-literal": false,
         "object-literal-sort-keys": false,
-        "ordered-imports": false,
+        "ordered-imports": true,
         "quotemark": [
-            true,
+            false,
             "avoid-escape"
         ],
         "trailing-comma": [
