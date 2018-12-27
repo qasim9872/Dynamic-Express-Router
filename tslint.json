@@ -19,7 +19,6 @@
         "ordered-imports": false,
         "quotemark": [
             true,
-            "single",
             "avoid-escape"
         ],
         "trailing-comma": [

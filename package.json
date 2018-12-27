@@ -8,16 +8,16 @@
     "prepare": "npm run build",
     "prepublishOnly": "npm test && npm run lint",
     "preversion": "npm run lint",
-    "version": "npm run format && git add -A src",
+    "version": "npm run format && git add -A lib",
     "postversion": "git push && git push --tags",
     "build": "tsc",
-    "dev": "nodemon",
+    "dev": "DEBUG=route-boiler:* nodemon",
     "build:watch": "tsc --watch",
-    "docs": "typedoc --out docs src",
+    "docs": "typedoc --out docs lib",
     "gh-pages": "rimraf docs && npm run docs && gh-pages -d docs",
     "lint1": "tslint --project \"./tsconfig.json\"",
     "lint": "tslint -p tsconfig.json",
-    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "format": "prettier --write \"lib/**/*.ts\" \"lib/**/*.js\"",
     "test": "jest --config jestconfig.json"
   },
   "author": "Muhammad Qasim",
@@ -35,6 +35,8 @@
     "typescript": "^3.1.6"
   },
   "dependencies": {
+    "@types/debug": "0.0.31",
+    "debug": "^4.1.1",
     "ts-node": "^7.0.1"
   }
 }
