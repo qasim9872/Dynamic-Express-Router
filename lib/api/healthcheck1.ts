@@ -1,9 +1,15 @@
 import { Request, Response } from "express"
+import { requestTypes } from "route-boiler/IRoute.interface"
 
-export default async function(req: Request, res: Response) {
-  res.status(200).json({
-    api_version: `v1`,
-    endpoint_name: `health-check1`,
-    app_name: `Route-boiler`,
-  })
+export default {
+  method: requestTypes.GET,
+  schema: {},
+  middlewares: [],
+  handler: async (req: Request, res: Response) => {
+    res.status(200).json({
+      api_version: `v1`,
+      endpoint_name: `health-check1`,
+      app_name: `Route-boiler`
+    })
+  }
 }

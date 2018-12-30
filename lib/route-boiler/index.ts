@@ -2,20 +2,29 @@ import Router from "express-promise-router"
 import * as fse from "fs-extra"
 import { join } from "path"
 
+/* tslint:disable:no-var-requires */
+const validate = require("express-validation")
+
 import config from "./config/default.config"
-import { IRoute, requestTypes } from "./IRoute.interface"
+import { IRouteConfig, requestTypes } from "./IRoute.interface"
 import { createDebugger } from "./utils/debug"
-import { getPath, normalize } from "./utils/helpers"
+import { getPath, isObjectEmpty, normalize } from "./utils/helpers"
 
 const debug = createDebugger(__filename)
 
-async function loadRouteFile(name: string, path: string): Promise<IRoute> {
-  const routeFile = await import(path)
+async function loadRouteFile(name: string, path: string) {
+  const routeFile: IRouteConfig = (await import(path)).default
+
+  let handlers = [...routeFile.middlewares]
+
+  if (routeFile.schema && !isObjectEmpty(routeFile.schema)) {
+    handlers = handlers.concat(validate(routeFile.schema))
+  }
 
   return {
     name: normalize(name),
-    requestType: requestTypes.GET,
-    handler: routeFile.default
+    method: routeFile.method,
+    handlers: handlers.concat(routeFile.handler)
   }
 }
 
@@ -35,8 +44,8 @@ async function loadRoutes(path: string, prefix = ``) {
         router.use(subRoute, subRouter)
       } else {
         const route = await loadRouteFile(fileName, filePath)
-        router.route(route.name)[route.requestType](route.handler)
-        debug(`${route.requestType}: ${prefix}${route.name}`)
+        router.route(route.name)[route.method](route.handlers)
+        debug(`${route.method}: ${prefix}${route.name}`)
       }
     })
   )
@@ -59,13 +68,6 @@ export default async function initialize(
     await fse.ensureDir(fullPath)
   }
 
-  // read directory contents
   const router = await loadRoutes(fullPath)
-  // debug(JSON.stringify(router.stack, null, 2))
-  // debug(
-  //   router.stack // registered routes
-  //     .filter((r) => r.route) // take out all the middleware
-  //     .map((r) => r.route.path), // get all the paths
-  // )
   return router
 }

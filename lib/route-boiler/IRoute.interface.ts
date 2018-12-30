@@ -1,18 +1,29 @@
-import { Request, Response } from "express"
-// import { Schema } from "joi"
+import { NextFunction, Request, Response } from "express"
+import { ObjectSchema, Schema } from "joi"
 
 type expressHandler = (req: Request, res: Response) => any
+type expressMiddleware = (req: Request, res: Response, next: NextFunction) => any
 
-// export interface JoiSchema {
-//   Update this when adding schema for any of "body" | "params" | "query" | "headers" | "cookies"
-//   body: {
-//     [key: string]: Schema
-//   }
-// }
+export interface IJoiSchema {
+  // Update this when adding schema for any of "body" | "params" | "query" | "headers" | "cookies"
+  body?:
+    | {
+        [key: string]: Schema
+      }
+    | ObjectSchema
+}
 
 export const enum requestTypes {
   GET = "get",
-  POST = "post",
+  POST = "post"
+}
+
+export interface IRouteConfig {
+  name?: string
+  method: requestTypes
+  schema?: IJoiSchema
+  middlewares: expressMiddleware[]
+  handler: expressHandler
 }
 
 export interface IRoute {

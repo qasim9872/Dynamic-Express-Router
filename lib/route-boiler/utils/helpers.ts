@@ -21,3 +21,9 @@ export function normalize(name: string): string {
 
   return `/${extracted}`
 }
+
+export function isObjectEmpty(obj: object) {
+  const isEmpty = Object.keys(obj).length === 0
+
+  return isEmpty
+}
