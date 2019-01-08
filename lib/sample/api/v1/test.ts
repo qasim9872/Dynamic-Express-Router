@@ -1,10 +1,6 @@
 import { NextFunction, Request, Response } from "express"
 import * as Joi from "joi"
-import { requestTypes } from "./../../route-boiler/IRoute.interface"
-import { IRouteConfig } from "./../../route-boiler/IRoute.interface"
-
-import { createDebugger } from "../../route-boiler/utils/debug"
-const debug = createDebugger(__filename)
+import { IRouteConfig, requestTypes } from "../../../route-boiler/IRoute.interface"
 
 const routeConfig: IRouteConfig = {
   method: requestTypes.POST,
@@ -15,7 +11,7 @@ const routeConfig: IRouteConfig = {
   },
   middlewares: [
     (req: Request, res: Response, next: NextFunction) => {
-      debug(`post healthcheck endpoint called`)
+      console.log(`post healthcheck endpoint called`)
       next()
     }
   ],

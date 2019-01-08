@@ -6,25 +6,28 @@ import { join } from "path"
 const validate = require("express-validation")
 
 import config from "./config/default.config"
-import { IRouteConfig, requestTypes } from "./IRoute.interface"
 import { createDebugger } from "./utils/debug"
 import { getPath, isObjectEmpty, normalize } from "./utils/helpers"
+import { validateRoute } from "./utils/validation"
 
 const debug = createDebugger(__filename)
 
-async function loadRouteFile(name: string, path: string) {
-  const routeFile: IRouteConfig = (await import(path)).default
+async function loadRoute(name: string, path: string) {
+  const routeFile = (await import(path)).default
 
-  let handlers = [...routeFile.middlewares]
+  const routeConfig = validateRoute(routeFile)
 
-  if (routeFile.schema && !isObjectEmpty(routeFile.schema)) {
-    handlers = handlers.concat(validate(routeFile.schema))
+  let handlers = [...routeConfig.middlewares()]
+
+  const schema = routeConfig.validationSchema()
+  if (schema && !isObjectEmpty(schema)) {
+    handlers = handlers.concat(validate(schema))
   }
 
   return {
     name: normalize(name),
-    method: routeFile.method,
-    handlers: handlers.concat(routeFile.handler)
+    method: routeConfig.method(),
+    handlers: handlers.concat(routeConfig.handler)
   }
 }
 
@@ -43,9 +46,14 @@ async function loadRoutes(path: string, prefix = ``) {
         const subRouter = await loadRoutes(filePath, `${prefix}${subRoute}`)
         router.use(subRoute, subRouter)
       } else {
-        const route = await loadRouteFile(fileName, filePath)
-        router.route(route.name)[route.method](route.handlers)
-        debug(`${route.method}: ${prefix}${route.name}`)
+        try {
+          const route = await loadRoute(fileName, filePath)
+          router.route(route.name)[route.method](route.handlers)
+          debug(`${route.method}: ${prefix}${route.name}`)
+        } catch (err) {
+          debug(`Error loading route from file: ${fileName}`)
+          debug(err)
+        }
       }
     })
   )
