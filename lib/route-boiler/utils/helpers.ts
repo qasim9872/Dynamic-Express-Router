@@ -1,7 +1,7 @@
 import * as appDir from "app-root-path"
 import * as path from "path"
-import { IRouteConfig, requestTypes } from "../../route-boiler/IRoute.interface"
-import IRoute from "./../IRoute"
+// import { IRouteConfig, requestTypes } from "../../route-boiler/IRoute.interface"
+// import IRoute from "./../IRoute"
 
 export function extractNameFromPath(filePath: string): string {
   const extractedName = filePath.match(/.*\/(.*)\./)
@@ -30,24 +30,24 @@ export function isObjectEmpty(obj: object) {
   return isEmpty
 }
 
-export function validateRouteFile(routeFile: any): IRoute {
-  const errors: string[] = []
+// export function validateRouteFile(routeFile: any): IRoute {
+//   const errors: string[] = []
 
-  // assert requestTypes
-  if (!Object.values(requestTypes).includes(routeFile.method)) {
-    // errors.push()
-    errors.push(`Invalid request method: ${routeFile.method}`)
-  }
+//   // assert requestTypes
+//   // if (!Object.values(requestTypes).includes(routeFile.method)) {
+//   //   // errors.push()
+//   //   errors.push(`Invalid request method: ${routeFile.method}`)
+//   // }
 
-  // assert schema
+//   // assert schema
 
-  // assert middlewares
+//   // assert middlewares
 
-  // assert handler
+//   // assert handler
 
-  if (errors.length > 0) {
-    throw new Error(errors.toString())
-  } else {
-    return (routeFile as any) as IRoute
-  }
-}
+//   if (errors.length > 0) {
+//     throw new Error(errors.toString())
+//   } else {
+//     return (routeFile as any) as IRoute
+//   }
+// }

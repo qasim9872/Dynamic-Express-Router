@@ -1,5 +1,2 @@
-import routeBoiler from "./route-boiler/oldIndex"
+import routeBoiler from "./route-boiler/index"
 export default routeBoiler
-
-import Sample from "./sample"
-Sample()

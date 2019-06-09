@@ -1,11 +1,16 @@
 export default interface IConfig {
   /**
-   * @description The project source directory
+   * @description The project base directory
    */
-  sourceDir: string
+  baseDir: string
 
   /**
-   * @description The Array of pattern to match from the source directory
+   * @description The relative path to middlewares folder
    */
-  api?: string[]
+  middlewares?: string[]
+
+  /**
+   * @description The relative path to routes folder
+   */
+  routes?: string[]
 }
