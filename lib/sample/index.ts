@@ -1,4 +1,4 @@
-import routeBoiler from "../route-boiler"
+import routeBoiler from "../route-boiler/index"
 
 import { json } from "body-parser"
 import * as express from "express"
@@ -11,7 +11,11 @@ async function setup() {
   const app = express()
 
   app.use(json())
-  app.use(await routeBoiler("lib/sample"))
+  // app.use(
+  await new routeBoiler({
+    sourceDir: __dirname
+  }).getRouter()
+  // )
 
   app.use((req, res, next) => {
     if (!req.route) {

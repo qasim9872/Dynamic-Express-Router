@@ -1,4 +1,8 @@
-export default {
-  DEFAULT_FOLDER_NAME: "api",
-  DEFAULT_RELATIVE_PATH: "lib",
+import IConfig from "../interfaces/config.interface"
+
+export default function getDefaultConfig(): IConfig {
+  return {
+    sourceDir: process.cwd(),
+    api: ["api/**/*.ts", "api/**/*.js"]
+  }
 }
