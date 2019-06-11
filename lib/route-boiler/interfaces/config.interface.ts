@@ -7,7 +7,7 @@ export default interface IConfig {
   /**
    * @description The relative path to middlewares folder
    */
-  middlewares?: string[]
+  middlewares?: string[] | false
 
   /**
    * @description The relative path to routes folder

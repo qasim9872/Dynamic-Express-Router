@@ -1,4 +1,4 @@
-import { extractNameFromPath } from "../../lib/route-boiler/utils/helpers"
+import { extractNameFromPath } from "../../route-boiler/utils/helpers"
 
 describe(`extractNameFromPath('path')`, () => {
   it(`should return file name given path`, () => {
