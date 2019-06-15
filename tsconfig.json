@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "outDir": "lib/",
+        "strict": true,
+        "sourceMap": true,
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "noEmitOnError": true,
+        "target": "es5",
+        "declaration": true,
+        "removeComments": false,
+        "noImplicitAny": true,
+        "forceConsistentCasingInFileNames": true,
+        "noUnusedLocals": true,
+        "pretty": true
+    }
+}
