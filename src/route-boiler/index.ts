@@ -1,52 +1,52 @@
+import * as fse from "fs-extra"
 import * as express from "express"
-import { getConfig, config } from "./config"
+import Router from "express-promise-router"
+import { getConfig, UserConfig } from "./config"
 import { createDebugger } from "./utils/debug"
 import { join } from "path"
-import * as _ from "lodash"
-import * as glob from "glob-promise"
+import parseFile, { Route } from "./parse-file"
 
 const debug = createDebugger("main")
 
-function getGlobPatterns(base: string, patterns: string[] = []) {
-    const globPatterns: string[] = []
-    for (const pattern of patterns) {
-        const filePath = join(base, pattern)
-        globPatterns.push(filePath)
+export async function setRoute(router: any, routeName: string, routes: Route[]): Promise<void> {
+    for (const route of routes) {
+        router.route(routeName)[route.requestType](route.handler)
     }
-    return globPatterns
 }
 
-export async function getFileNames(base: string, subPatterns: string[] = []) {
-    const patterns = getGlobPatterns(base, subPatterns)
+export async function loadRoutes(pathToFolder: string): Promise<express.Router> {
+    const router = Router()
 
-    let fileNames: string[] = []
+    // ensure directory exists
+    await fse.ensureDir(pathToFolder)
 
-    for (const pattern of patterns) {
-        const fileRoutes = await glob(pattern)
-        // merge and ensure no duplicates are present within the routes
-        fileNames = _.union(fileNames, fileRoutes)
+    const files = await fse.readdir(pathToFolder)
+
+    for (const file of files) {
+        const filePath = join(pathToFolder, file)
+        // const stats = await fse.lstat(filePath)
+
+        // if (stats.isDirectory()) {
+        //     const subRouter = await loadRoutes(filePath)
+        // } else {
+        const routeConfig = await parseFile(filePath, file)
+        setRoute(router, routeConfig.routeName, routeConfig.routes)
+        // }
     }
 
-    return fileNames
+    return router
 }
 
-export async function loadRoutes(config: config, router: express.Router) {
-    const routes = await getFileNames(config.baseDir, config.routes)
-
-    debug(routes)
-}
-
-export async function routeBoiler(userConfig: config) {
+export async function routeBoiler(userConfig: UserConfig): Promise<express.Router> {
     const config = getConfig(userConfig)
 
-    debug(`config:`, config)
-
-    const router = express.Router()
+    debug(`config:`, JSON.stringify(config, null, 2))
 
     // load middlewares
 
     // load routes
-    await loadRoutes(config, router)
+    const pathToRoutesFolder = join(config.baseDir, config.routes)
+    const router = await loadRoutes(pathToRoutesFolder)
 
     return router
 }

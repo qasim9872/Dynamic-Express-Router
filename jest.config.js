@@ -16,5 +16,6 @@ module.exports = {
     transform: {
         "\\.(ts|tsx)": "ts-jest"
     },
-    moduleFileExtensions: ["ts", "tsx", "js"]
+    moduleFileExtensions: ["ts", "tsx", "js"],
+    verbose: true
 }

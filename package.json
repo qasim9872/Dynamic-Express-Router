@@ -5,13 +5,13 @@
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
     "scripts": {
-        "precommit": "yarn format && yarn test",
-        "prepush": "yarn format && yarn test",
+        "precommithusky": "yarn format && yarn test",
+        "prepushhusky": "yarn format && yarn test",
         "test": "jest",
-        "pretty-base": "prettier '*.{ts, js,json}' '{src,tests}/**/*.js'",
+        "staged-test": "yarn test --bail --findRelatedTests",
+        "pretty-base": "prettier '*.{ts, js, json}' '{src,tests}/**/*.ts'",
         "format": "yarn pretty-base --write",
-        "fix": "prettier-eslint --write 'src/**/*.{js,jsx}'",
-        "lint": "eslint --fix '*.{js,json,md}' '{src,tests}/**/*.js'",
+        "lint": "eslint --fix 'src/**/*.{ts,tsx}'",
         "dev": "DEBUG=route-boiler:* nodemon",
         "commit": "git-cz",
         "release": "standard-version"
@@ -36,6 +36,7 @@
         "@commitlint/config-conventional": "^8.0.0",
         "@types/debug": "^4.1.4",
         "@types/express": "^4.17.0",
+        "@types/fs-extra": "^7.0.0",
         "@types/jest": "^24.0.14",
         "@types/lodash": "^4.14.134",
         "@types/supertest": "^2.0.7",
@@ -57,6 +58,19 @@
         "typescript": "^3.5.2",
         "typescript-eslint-parser": "^22.0.0"
     },
+    "lint-staged": {
+        "*.ts": [
+            "yarn format",
+            "yarn lint",
+            "yarn staged-test",
+            "git add"
+        ]
+    },
+    "commitlint": {
+        "extends": [
+            "@commitlint/config-conventional"
+        ]
+    },
     "config": {
         "commitizen": {
             "path": "./node_modules/cz-conventional-changelog"
@@ -64,18 +78,21 @@
     },
     "husky": {
         "hooks": {
-            "pre-commit": "yarn precommit",
-            "prepare-commit-msg": "exec < /dev/tty && git cz --hook",
+            "pre-commit": "lint-staged",
             "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
         }
     },
     "dependencies": {
         "app-root-path": "^2.2.1",
         "debug": "^4.1.1",
+        "eslint-config-prettier": "^5.0.0",
+        "eslint-plugin-prettier": "^3.1.0",
         "express": "^4.17.1",
+        "express-promise-router": "^3.0.3",
         "fs-extra": "^8.0.1",
         "glob": "^7.1.4",
         "glob-promise": "^3.4.0",
+        "is-what": "^3.2.3",
         "lodash": "^4.17.11",
         "merge-json": "^0.1.0-b.3"
     }

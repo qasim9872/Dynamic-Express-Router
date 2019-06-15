@@ -1,7 +1,7 @@
 import * as supertest from "supertest"
 import basicWithMiddlewareApp from "../../samples/basic-with-middleware"
 
-describe(`sample: basic scenario`, () => {
+xdescribe(`sample: basic scenario`, () => {
     it(` should GET /basic route`, async done => {
         const app = await basicWithMiddlewareApp()
 

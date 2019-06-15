@@ -7,7 +7,7 @@ describe(`sample: basic scenario`, () => {
 
         const server = supertest(app)
 
-        server.get("/basic").expect(200, (err, res) => {
+        server.get("/basic").expect(200, err => {
             done(err)
         })
     })
