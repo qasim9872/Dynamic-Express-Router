@@ -1,6 +1,6 @@
 {
     "name": "route-boiler",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "description": "A package that allows setting up routes dynamically",
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
@@ -48,7 +48,9 @@
         "ts-node": "^8.2.0",
         "tslint": "^5.17.0",
         "typescript": "^3.5.2",
-        "typescript-eslint-parser": "^22.0.0"
+        "typescript-eslint-parser": "^22.0.0",
+        "@typescript-eslint/eslint-plugin": "^1.10.2",
+        "@typescript-eslint/parser": "^1.10.2"
     },
     "config": {
         "commitizen": {
@@ -61,9 +63,5 @@
             "prepare-commit-msg": "exec < /dev/tty && git cz --hook",
             "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
         }
-    },
-    "dependencies": {
-        "@typescript-eslint/eslint-plugin": "^1.10.2",
-        "@typescript-eslint/parser": "^1.10.2"
     }
 }
