@@ -3,8 +3,7 @@ import routeBoiler from "../../index"
 
 async function setupRoutes() {
     const router = await routeBoiler({
-        baseDir: __dirname,
-        middlewares: false
+        baseDir: __dirname
     })
 
     return router

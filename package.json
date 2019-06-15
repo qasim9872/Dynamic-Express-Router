@@ -37,6 +37,7 @@
         "@types/debug": "^4.1.4",
         "@types/express": "^4.17.0",
         "@types/jest": "^24.0.14",
+        "@types/lodash": "^4.14.134",
         "@types/supertest": "^2.0.7",
         "@typescript-eslint/eslint-plugin": "^1.10.2",
         "@typescript-eslint/parser": "^1.10.2",
@@ -71,6 +72,11 @@
     "dependencies": {
         "app-root-path": "^2.2.1",
         "debug": "^4.1.1",
-        "express": "^4.17.1"
+        "express": "^4.17.1",
+        "fs-extra": "^8.0.1",
+        "glob": "^7.1.4",
+        "glob-promise": "^3.4.0",
+        "lodash": "^4.17.11",
+        "merge-json": "^0.1.0-b.3"
     }
 }
