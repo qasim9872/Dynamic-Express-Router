@@ -7,5 +7,5 @@ export function normalizeFileName(name: string): string {
     // TODO - remove hyphens
     // TODO - lowercase
 
-    return `/${extracted}`
+    return extracted
 }

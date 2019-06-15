@@ -1,8 +1,8 @@
 import * as supertest from "supertest"
 import basicWithMiddlewareApp from "../../samples/basic-with-middleware"
 
-xdescribe(`sample: basic scenario`, () => {
-    it(` should GET /basic route`, async done => {
+describe(`sample: basic scenario`, () => {
+    it(`should GET /basic route`, async done => {
         const app = await basicWithMiddlewareApp()
 
         const server = supertest(app)
@@ -17,8 +17,11 @@ xdescribe(`sample: basic scenario`, () => {
 
         const server = supertest(app)
 
-        server.get("/basic?error=true").expect(500, (err, res) => {
-            done(err)
-        })
+        server
+            .get("/basic")
+            .query({ error: true })
+            .expect(500, (err, res) => {
+                done(err)
+            })
     })
 })
