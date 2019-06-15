@@ -1,7 +1,7 @@
-import dummy from "../dummy";
+import dummy from "../dummy"
 
 describe(`dummy test`, () => {
     it(`should return true`, () => {
-        expect(dummy()).toBeTruthy();
-    });
-});
+        expect(dummy()).toBeTruthy()
+    })
+})
