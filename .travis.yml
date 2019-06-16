@@ -1,7 +1,14 @@
+sudo: false
+install: true
 language: node_js
+node_js:
+    - stable
+before_install:
+    - npm i -g yarn
+    - yarn --version
 
 script:
-    - yarn run test-only
+    - yarn test-only
 
 after_success:
     - yarn run typedoc
