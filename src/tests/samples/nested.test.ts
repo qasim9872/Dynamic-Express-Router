@@ -1,3 +1,8 @@
+jest.mock("../../route-boiler/utils/helper", () => ({
+    ...jest.requireActual("../../route-boiler/utils/helper"),
+    logRoute: () => jest.fn()
+}))
+
 import * as supertest from "supertest"
 import nestedApp from "../../samples/nested"
 

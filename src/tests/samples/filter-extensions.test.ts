@@ -4,13 +4,13 @@ jest.mock("../../route-boiler/utils/helper", () => ({
 }))
 
 import * as supertest from "supertest"
-import basicApp from "../../samples/basic"
+import filterExtensionsApp from "../../samples/filter-extensions"
 
-describe(`sample: basic scenario`, () => {
+describe(`sample: filter extensions scenario`, () => {
     let server: supertest.SuperTest<supertest.Test>
 
     beforeAll(async done => {
-        const app = await basicApp()
+        const app = await filterExtensionsApp()
 
         server = supertest(app)
         done()
@@ -18,18 +18,6 @@ describe(`sample: basic scenario`, () => {
 
     it(`should GET /basic route`, async done => {
         server.get("/basic").expect(200, err => {
-            done(err)
-        })
-    })
-
-    it(`should GET /default route`, async done => {
-        server.get("/default").expect(200, err => {
-            done(err)
-        })
-    })
-
-    it(`should POST /basic route`, async done => {
-        server.post("/basic").expect(200, err => {
             done(err)
         })
     })

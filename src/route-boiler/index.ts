@@ -1,19 +1,20 @@
 import * as fse from "fs-extra"
 import * as express from "express"
 import Router from "express-promise-router"
-import { getConfig, UserConfig } from "./config"
+import { getConfig, UserConfig, Config } from "./config"
 import { createDebugger } from "./utils/debug"
 import { join } from "path"
 import parseRouteFile, { ParsedRoutes } from "./parse-route"
 import parseMiddlewareFile from "./parse-middleware"
-import { getNormalizedRouteName } from "./utils/helper"
+import { getNormalizedRouteName, logRoute, isFileNameAllowed } from "./utils/helper"
 
 const debug = createDebugger("main")
 
 export async function setRoute(
     router: any,
     middlewares: { [key: string]: Function },
-    routesConfig: ParsedRoutes
+    routesConfig: ParsedRoutes,
+    path: string
 ): Promise<void> {
     const routeName = routesConfig.routeName
     const routes = routesConfig.routes
@@ -30,6 +31,8 @@ export async function setRoute(
 
         if (route.handler) {
             handlers.push(route.handler)
+            // Only log routes with handlers
+            logRoute(route.requestType, path + routeName)
         }
 
         router.route(routeName)[route.requestType](handlers)
@@ -38,7 +41,9 @@ export async function setRoute(
 
 export async function loadRoutes(
     pathToFolder: string,
-    middlewares: { [key: string]: Function }
+    middlewares: { [key: string]: Function },
+    config: Config,
+    path: string = ""
 ): Promise<express.Router> {
     const router = Router()
 
@@ -53,18 +58,18 @@ export async function loadRoutes(
 
         if (stats.isDirectory()) {
             const subRouterPath = getNormalizedRouteName(file)
-            const subRouter = await loadRoutes(filePath, middlewares)
+            const subRouter = await loadRoutes(filePath, middlewares, config, path + subRouterPath)
             router.use(subRouterPath, subRouter)
-        } else {
+        } else if (isFileNameAllowed(file, config.fileExtensions)) {
             const routeConfig = await parseRouteFile(filePath, file)
-            setRoute(router, middlewares, routeConfig)
+            setRoute(router, middlewares, routeConfig, path)
         }
     }
 
     return router
 }
 
-export async function loadMiddlewares(pathToFolder: string) {
+export async function loadMiddlewares(pathToFolder: string, config: Config) {
     const middlewares: { [key: string]: Function } = {}
 
     // only load middlewares if directory exists
@@ -88,11 +93,11 @@ export async function routeBoiler(userConfig: UserConfig): Promise<express.Route
 
     // load middlewares
     const pathToMiddlewareFolder = join(config.baseDir, config.middlewares)
-    const middlewares = await loadMiddlewares(pathToMiddlewareFolder)
+    const middlewares = await loadMiddlewares(pathToMiddlewareFolder, config)
 
     // load routes
     const pathToRoutesFolder = join(config.baseDir, config.routes)
-    const router = await loadRoutes(pathToRoutesFolder, middlewares)
+    const router = await loadRoutes(pathToRoutesFolder, middlewares, config)
 
     return router
 }

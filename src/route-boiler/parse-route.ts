@@ -34,18 +34,16 @@ export function getRequestTypeFromKey(key: string) {
 }
 
 export function parseExportedMember(key: string, exportedMember: any) {
-    if (isFunction(exportedMember)) {
-        const requestType = getRequestTypeFromKey(key)
+    const requestType = getRequestTypeFromKey(key)
 
+    if (isFunction(exportedMember)) {
         // request handler
         return {
             requestType,
             handler: exportedMember
         }
     } else if (isArray(exportedMember)) {
-        const requestType = getRequestTypeFromKey(key)
-
-        // request handler
+        // array of middlewares
         return {
             requestType,
             middlewares: exportedMember

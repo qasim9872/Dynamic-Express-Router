@@ -1,3 +1,22 @@
+import chalk from "chalk"
+
+const log = console.log
+
+const formatMethod = chalk.keyword("green")
+
+export function logRoute(requestType: string, path: string) {
+    log(`${formatMethod(requestType.toUpperCase())}: ${path}`)
+}
+
+export function isFileNameAllowed(fileName: string, extensions: string[]) {
+    for (const ext of extensions) {
+        if (fileName.includes(ext)) {
+            return true
+        }
+    }
+    return false
+}
+
 export function normalizeFileName(name: string): string {
     const cleanName = name.trim().toLowerCase()
     const match = cleanName.match(/(.*)\./)
