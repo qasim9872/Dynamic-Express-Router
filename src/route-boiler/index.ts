@@ -45,7 +45,9 @@ export async function loadRoutes(
     config: Config,
     path: string = ""
 ): Promise<express.Router> {
-    const router = Router()
+    const router = Router({
+        mergeParams: true // fix to allow params to be accessible in child routes
+    })
 
     // ensure directory exists
     await fse.ensureDir(pathToFolder)
