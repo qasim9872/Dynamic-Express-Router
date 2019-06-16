@@ -1,5 +1,5 @@
 {
-    "name": "route-boiler",
+    "name": "dynamic-express-router",
     "version": "1.1.0",
     "description": "A package that allows setting up routes dynamically",
     "main": "lib/index.js",
@@ -12,14 +12,14 @@
         "pretty-base": "prettier '*.{ts, js, json}' '{src,tests}/**/*.ts'",
         "format": "yarn pretty-base --write",
         "lint": "eslint --fix 'src/**/*.{ts,tsx}'",
-        "dev": "DEBUG=route-boiler:* nodemon",
+        "dev": "DEBUG=dynamic-express-router:* nodemon",
         "commit": "git-cz",
         "release": "standard-version",
-        "docs": "typedoc --out docs src/route-boiler"
+        "docs": "typedoc --out docs src/dynamic-express-router"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/qasim9872/route-boiler.git"
+        "url": "git+https://github.com/qasim9872/Dynamic-Express-Router"
     },
     "keywords": [
         "express",
@@ -29,9 +29,9 @@
     "author": "Muhammad Qasim <qasim9872@gmail.com>",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/qasim9872/route-boiler/issues"
+        "url": "https://github.com/qasim9872/Dynamic-Express-Router/issues"
     },
-    "homepage": "https://github.com/qasim9872/route-boiler#readme",
+    "homepage": "https://github.com/qasim9872/Dynamic-Express-Router#readme",
     "devDependencies": {
         "@commitlint/cli": "^8.0.0",
         "@commitlint/config-conventional": "^8.0.0",

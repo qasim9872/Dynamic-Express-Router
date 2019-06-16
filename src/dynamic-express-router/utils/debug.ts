@@ -7,5 +7,5 @@ function extractNameFromPath(filePath: string): string {
 
 export function createDebugger(filePath: string) {
     const name = extractNameFromPath(filePath)
-    return debug(`route-boiler:${name}`)
+    return debug(`dynamic-express-router:${name}`)
 }

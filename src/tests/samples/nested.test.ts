@@ -1,5 +1,5 @@
-jest.mock("../../route-boiler/utils/helper", () => ({
-    ...jest.requireActual("../../route-boiler/utils/helper"),
+jest.mock("../../dynamic-express-router/utils/helper", () => ({
+    ...jest.requireActual("../../dynamic-express-router/utils/helper"),
     logRoute: () => jest.fn()
 }))
 

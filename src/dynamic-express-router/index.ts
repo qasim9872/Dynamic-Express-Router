@@ -10,7 +10,7 @@ import { getNormalizedRouteName, logRoute, isFileNameAllowed } from "./utils/hel
 
 const debug = createDebugger("main")
 
-export async function setRoute(
+async function setRoute(
     router: any,
     middlewares: { [key: string]: Function },
     routesConfig: ParsedRoutes,
@@ -39,7 +39,7 @@ export async function setRoute(
     }
 }
 
-export async function loadRoutes(
+async function loadRoutes(
     pathToFolder: string,
     middlewares: { [key: string]: Function },
     config: Config,
@@ -71,7 +71,7 @@ export async function loadRoutes(
     return router
 }
 
-export async function loadMiddlewares(pathToFolder: string, config: Config) {
+async function loadMiddlewares(pathToFolder: string, config: Config) {
     const middlewares: { [key: string]: Function } = {}
 
     // only load middlewares if directory exists
@@ -89,7 +89,7 @@ export async function loadMiddlewares(pathToFolder: string, config: Config) {
     return middlewares
 }
 
-export async function routeBoiler(userConfig: UserConfig): Promise<express.Router> {
+export async function dynamicRouter(userConfig: UserConfig): Promise<express.Router> {
     const config = getConfig(userConfig)
 
     debug(`config:`, JSON.stringify(config, null, 2))

@@ -1,1 +1,1 @@
-export { routeBoiler as default } from "./route-boiler"
+export { dynamicRouter as default } from "./dynamic-express-router"

@@ -1,8 +1,8 @@
-import routeBoiler from "../../index"
+import DynamicRouter from "../../index"
 import { getAppInstance } from "../helper"
 
 async function setupRoutes() {
-    const router = await routeBoiler({
+    const router = await DynamicRouter({
         baseDir: __dirname
     })
 
