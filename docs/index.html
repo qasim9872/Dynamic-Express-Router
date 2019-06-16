@@ -1,0 +1,254 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>dynamic-express-router</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.js" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">dynamic-express-router</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+							<input type="checkbox" id="tsd-filter-only-exported" />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="globals.html">Globals</a>
+				</li>
+			</ul>
+			<h1> dynamic-express-router</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<h1 id="dynamic-express-router">Dynamic Express Router</h1>
+				<p><a href="http://commitizen.github.io/cz-cli/"><img src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg" alt="Commitizen friendly"></a></p>
+				<p>A simple to use Express based library that automatically generates routes from a specified directory (default: /routes). Furthermore, allows for dynamic configuration of middlewares by specifying a middlewares folder (default: /middlewares) and using them in the routes using the middleware name.</p>
+				<h2 id="getting-started">Getting Started</h2>
+				<p>With NPM install the module with: <code>npm install dynamic-express-router --save</code><br>With YARN install the module with: <code>yarn add dynamic-express-router</code></p>
+				<h2 id="setup">Setup</h2>
+				<p>To use the package, simply configure and use the package with express app.</p>
+				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> express <span class="hljs-keyword">from</span> <span class="hljs-string">"express"</span>
+<span class="hljs-keyword">import</span> dynamicRouter <span class="hljs-keyword">from</span> <span class="hljs-string">"dynamic-express-router"</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setup</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">const</span> app = express()
+
+    <span class="hljs-comment">// Additional middlewares here</span>
+
+    <span class="hljs-keyword">const</span> router = <span class="hljs-keyword">await</span> dynamicRouter({
+        baseDir: __dirname, <span class="hljs-comment">// required</span>
+        middlewares: <span class="hljs-string">"./middlewares"</span>, <span class="hljs-comment">// default - relative to baseDir</span>
+        routes: <span class="hljs-string">"./routes"</span>, <span class="hljs-comment">// default - relative to baseDir</span>
+        fileExtensions: [<span class="hljs-string">".ts"</span>, <span class="hljs-string">".js"</span>] <span class="hljs-comment">// default</span>
+    })
+    app.use(router)
+
+    <span class="hljs-keyword">return</span> app
+}</code></pre>
+				<h2 id="example-routes-file">Example Routes File</h2>
+				<p>export a function (handler) or a string array (middleware names) as you like, simply include the request type in the name and the package will pick it up.</p>
+				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { Request, Response } <span class="hljs-keyword">from</span> <span class="hljs-string">"express"</span>
+
+<span class="hljs-comment">// the array name contains the request type: get</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> getMiddlewares = [<span class="hljs-string">"name-of-middleware-file"</span>]
+
+<span class="hljs-comment">// the function name contains the request type: get</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getHandler</span>(<span class="hljs-params">req: Request, res: Response</span>) </span>{
+    <span class="hljs-keyword">return</span> res.sendStatus(<span class="hljs-number">200</span>)
+}
+
+<span class="hljs-comment">// the function name contains the request type: post</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">handlePost</span>(<span class="hljs-params">req: Request, res: Response</span>) </span>{
+    <span class="hljs-keyword">return</span> res.sendStatus(<span class="hljs-number">200</span>)
+}</code></pre>
+				<h2 id="example-middleware-file">Example Middleware File</h2>
+				<pre><code class="language-typescript"><span class="hljs-comment">// file: middlewares/middleware-a.ts</span>
+<span class="hljs-comment">// can be used in routes using the name "middleware-a"</span>
+<span class="hljs-keyword">import</span> { Request, Response, NextFunction } <span class="hljs-keyword">from</span> <span class="hljs-string">"express"</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">checkParamMiddleware</span>(<span class="hljs-params">req: Request, res: Response, next: NextFunction</span>) </span>{
+    <span class="hljs-keyword">if</span> (req.body &amp;&amp; req.body.error) {
+        res.sendStatus(<span class="hljs-number">500</span>)
+    } <span class="hljs-keyword">else</span> {
+        next()
+    }
+}</code></pre>
+				<h2 id="routes-generated-dynamically">Routes Generated Dynamically</h2>
+				<p>The below folder structure</p>
+				<pre><code class="language-code">/middlewares
+    middleware-a.ts
+    middleware-b.ts
+/routes
+    health-check.ts
+    /user
+        index.ts
+        _id.ts</code></pre>
+				<p>Will Generate the following routes</p>
+				<pre><code class="language-routes">
+/health-check
+/user
+/user/:id
+</code></pre>
+				<h2 id="changelog">Changelog</h2>
+				<p>See changelog.md</p>
+				<h2 id="issues">Issues</h2>
+				<p>If you discover a bug, please raise an issue on Github. <a href="https://github.com/qasim9872/Dynamic-Express-Router/issues">https://github.com/qasim9872/Dynamic-Express-Router/issues</a></p>
+				<h2 id="contribution">Contribution</h2>
+				<p>Pull requests are very welcome. Please:</p>
+				<ul>
+					<li>ensure all tests pass before submitting PR</li>
+					<li>add an entry to CHANGELOG.md</li>
+					<li>add tests for new features</li>
+					<li>document new functionality/API additions in README.md</li>
+				</ul>
+				<h2 id="license">License</h2>
+				<p>Copyright (c) 2019 Muhammad Qasim. Licensed under the MIT license.</p>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="globals.html"><em>Globals</em></a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_config_.html">"config"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_index_.html">"index"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_parse_middleware_.html">"parse-<wbr>middleware"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_parse_route_.html">"parse-<wbr>route"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_supported_methods_.html">"supported-<wbr>methods"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_utils_debug_.html">"utils/debug"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_utils_helper_.html">"utils/helper"</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
+				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+				<li class="tsd-kind-enum-member"><span class="tsd-kind-icon">Enumeration member</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-enum"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-enum"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-interface"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class"><span class="tsd-kind-icon">Accessor</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-class"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
+				<li class="tsd-kind-call-signature tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="http://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="assets/js/search.js"><' + '/script>');</script>
+</body>
+</html>
