@@ -1,21 +1,24 @@
 {
     "name": "dynamic-express-router",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "description": "A package that allows setting up routes dynamically",
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
     "scripts": {
-        "precommithusky": "yarn format && yarn test",
-        "prepushhusky": "yarn format && yarn test",
+        "build": "tsc",
+        "build-watch": "tsc --watch",
+        "pretest": "yarn build",
         "test": "jest",
         "staged-test": "yarn test --bail --findRelatedTests",
+        "clean": "shx rm -rf node_modules/ dist/ docs/",
         "pretty-base": "prettier '*.{ts, js, json}' '{src,tests}/**/*.ts'",
         "format": "yarn pretty-base --write",
         "lint": "eslint --fix 'src/**/*.{ts,tsx}'",
         "dev": "DEBUG=dynamic-express-router:* nodemon",
         "commit": "git-cz",
         "release": "standard-version",
-        "docs": "typedoc --out docs src/dynamic-express-router"
+        "typedoc": "typedoc --out ./docs --mode modules --tsconfig ./tsconfig.json ./src/dynamic-express-router",
+        "posttypedoc": "shx cp .nojekyll docs/.nojekyll"
     },
     "repository": {
         "type": "git",
@@ -47,11 +50,14 @@
         "commitizen": "^3.1.1",
         "cz-conventional-changelog": "2.1.0",
         "eslint": "^5.16.0",
+        "eslint-config-prettier": "^5.0.0",
+        "eslint-plugin-prettier": "^3.1.0",
         "husky": "^2.4.1",
         "jest": "^24.8.0",
         "lint-staged": "^8.2.1",
         "nodemon": "^1.19.1",
         "prettier": "^1.18.2",
+        "shx": "^0.3.2",
         "standard-version": "^6.0.1",
         "supertest": "^4.0.2",
         "ts-jest": "^24.0.2",
@@ -59,9 +65,7 @@
         "tslint": "^5.17.0",
         "typedoc": "^0.14.2",
         "typescript": "^3.5.2",
-        "typescript-eslint-parser": "^22.0.0",
-        "eslint-config-prettier": "^5.0.0",
-        "eslint-plugin-prettier": "^3.1.0"
+        "typescript-eslint-parser": "^22.0.0"
     },
     "lint-staged": {
         "*.ts": [
