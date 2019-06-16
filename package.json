@@ -9,6 +9,7 @@
         "build-watch": "tsc --watch",
         "pretest": "yarn build",
         "test": "jest",
+        "test-only": "jest",
         "staged-test": "yarn test --bail --findRelatedTests",
         "clean": "shx rm -rf node_modules/ dist/ docs/",
         "pretty-base": "prettier '*.{ts, js, json}' '{src,tests}/**/*.ts'",

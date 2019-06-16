@@ -2,6 +2,7 @@ module.exports = {
     testEnvironment: "node",
     testRegex: "(/tests/.*\\.(test|spec))\\.(ts|tsx|js)$",
     modulePaths: ["src"],
+    collectCoverage: true,
     collectCoverageFrom: ["src/**/*.ts"],
     coveragePathIgnorePatterns: ["/node_modules/"],
     coverageDirectory: "<rootDir>/coverage",
