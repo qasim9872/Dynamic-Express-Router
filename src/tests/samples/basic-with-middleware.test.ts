@@ -17,6 +17,12 @@ describe(`sample: basic with middleware scenario`, () => {
         })
     })
 
+    it(`should GET /subroutes route`, async done => {
+        server.get("/subroutes").expect(200, (err, res) => {
+            done(err)
+        })
+    })
+
     it(`should hit the middleware and return 500`, async done => {
         server
             .get("/basic")

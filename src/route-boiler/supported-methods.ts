@@ -1,4 +1,5 @@
 export enum methods {
+    ALL = "ALL",
     GET = "GET",
     POST = "POST",
     PUT = "PUT",
@@ -6,6 +7,5 @@ export enum methods {
     PATCH = "PATCH",
     HEAD = "HEAD",
     TRACE = "TRACE",
-    OPTIONS = "OPTIONS",
-    CONNECT = "CONNECT"
+    OPTIONS = "OPTIONS"
 }

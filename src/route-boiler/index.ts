@@ -28,7 +28,9 @@ export async function setRoute(
               })
             : []
 
-        handlers.push(route.handler)
+        if (route.handler) {
+            handlers.push(route.handler)
+        }
 
         router.route(routeName)[route.requestType](handlers)
     }

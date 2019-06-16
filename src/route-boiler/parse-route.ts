@@ -8,7 +8,7 @@ const debug = createDebugger(__filename)
 export interface Route {
     requestType: string
     middlewares?: string[]
-    handler: Function
+    handler?: Function
 }
 
 export interface ParsedRoutes {
@@ -20,15 +20,14 @@ export interface FileStruct {
     [key: string]: any
 }
 
-export function getRequestTypeFromKey(key: string, keyword: string) {
-    // Extract request type from key
-    const name = key.toLowerCase().replace(keyword, "")
+export function getRequestTypeFromKey(key: string) {
+    const name = key.trim().toLowerCase()
 
-    let methodEnum = Object.keys(methods).find((method: string) => method.toLowerCase() === name)
+    // Check if method name exists within the key
+    let methodEnum = Object.keys(methods).find((method: string) => name.includes(method.toLowerCase()))
 
     if (!methodEnum) {
-        // Use default requestType
-        methodEnum = methods.GET
+        throw new Error(`Method not defined in name: ${key}`)
     }
 
     return methodEnum.toLowerCase()
@@ -36,7 +35,7 @@ export function getRequestTypeFromKey(key: string, keyword: string) {
 
 export function parseExportedMember(key: string, exportedMember: any) {
     if (isFunction(exportedMember)) {
-        const requestType = getRequestTypeFromKey(key, "handler")
+        const requestType = getRequestTypeFromKey(key)
 
         // request handler
         return {
@@ -44,7 +43,7 @@ export function parseExportedMember(key: string, exportedMember: any) {
             handler: exportedMember
         }
     } else if (isArray(exportedMember)) {
-        const requestType = getRequestTypeFromKey(key, "middlewares")
+        const requestType = getRequestTypeFromKey(key)
 
         // request handler
         return {
@@ -85,15 +84,22 @@ export function parseFileStructure(pathToFile: string, file: any, keys: string[]
     return fileStruct
 }
 
+export function validateRouteObject(route: any) {
+    return isFunction(route.handler) || (isArray(route.middlewares) && route.middlewares.length > 0)
+}
+
 export function createRoutesFromFileStruct(fileStruct: FileStruct) {
     const routes: Route[] = []
 
-    for (const requestType in fileStruct) {
-        const route = {
-            requestType,
-            ...fileStruct[requestType]
+    // Add the routes in the order defined by the enum
+    for (const requestType of Object.keys(methods).map(method => method.toLowerCase())) {
+        if (fileStruct[requestType] && validateRouteObject(fileStruct[requestType])) {
+            const route = {
+                requestType,
+                ...fileStruct[requestType]
+            }
+            routes.push(route)
         }
-        routes.push(route)
     }
 
     return routes

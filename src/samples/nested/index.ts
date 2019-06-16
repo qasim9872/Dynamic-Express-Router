@@ -1,4 +1,4 @@
-import * as express from "express"
+import { getAppInstance } from "../helper"
 import routeBoiler from "../../index"
 
 async function setupRoutes() {
@@ -10,7 +10,7 @@ async function setupRoutes() {
 }
 
 export default async function setup() {
-    const app = express()
+    const app = getAppInstance()
 
     const router = await setupRoutes()
     app.use(router)

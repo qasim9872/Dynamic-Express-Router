@@ -12,8 +12,14 @@ export function normalizeFileName(name: string): string {
 export function getNormalizedRouteName(name: string) {
     let routePath = normalizeFileName(name)
 
+    // dynamic path
     if (routePath.startsWith("_")) {
         routePath = routePath.replace("_", ":")
+    }
+
+    // if index file, use the root as base
+    if (routePath === "index") {
+        routePath = ""
     }
 
     return `/${routePath}`
