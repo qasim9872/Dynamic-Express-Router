@@ -75,8 +75,9 @@ export async function loadMiddlewares(pathToFolder: string, config: Config) {
     // only load middlewares if directory exists
     if (await fse.pathExists(pathToFolder)) {
         const files = await fse.readdir(pathToFolder)
+        const filteredFiles = files.filter(file => isFileNameAllowed(file, config.fileExtensions))
 
-        for (const file of files) {
+        for (const file of filteredFiles) {
             const filePath = join(pathToFolder, file)
             const middleware = await parseMiddlewareFile(filePath, file)
 
