@@ -6,6 +6,7 @@ import { createDebugger } from "./utils/debug"
 import { join } from "path"
 import parseRouteFile, { ParsedRoutes } from "./parse-route"
 import parseMiddlewareFile from "./parse-middleware"
+import { getNormalizedRouteName } from "./utils/helper"
 
 const debug = createDebugger("main")
 
@@ -46,34 +47,35 @@ export async function loadRoutes(
 
     for (const file of files) {
         const filePath = join(pathToFolder, file)
-        // const stats = await fse.lstat(filePath)
+        const stats = await fse.lstat(filePath)
 
-        // if (stats.isDirectory()) {
-        //     const subRouter = await loadRoutes(filePath)
-        // } else {
-        const routeConfig = await parseRouteFile(filePath, file)
-        setRoute(router, middlewares, routeConfig)
-        // }
+        if (stats.isDirectory()) {
+            const subRouterPath = getNormalizedRouteName(file)
+            const subRouter = await loadRoutes(filePath, middlewares)
+            router.use(subRouterPath, subRouter)
+        } else {
+            const routeConfig = await parseRouteFile(filePath, file)
+            setRoute(router, middlewares, routeConfig)
+        }
     }
 
     return router
 }
 
 export async function loadMiddlewares(pathToFolder: string) {
-    // ensure directory exists
-    await fse.ensureDir(pathToFolder)
-
-    const files = await fse.readdir(pathToFolder)
-
     const middlewares: { [key: string]: Function } = {}
 
-    for (const file of files) {
-        const filePath = join(pathToFolder, file)
-        const middleware = await parseMiddlewareFile(filePath, file)
+    // only load middlewares if directory exists
+    if (await fse.pathExists(pathToFolder)) {
+        const files = await fse.readdir(pathToFolder)
 
-        middlewares[middleware.name] = middleware.middlewareFn
+        for (const file of files) {
+            const filePath = join(pathToFolder, file)
+            const middleware = await parseMiddlewareFile(filePath, file)
+
+            middlewares[middleware.name] = middleware.middlewareFn
+        }
     }
-
     return middlewares
 }
 

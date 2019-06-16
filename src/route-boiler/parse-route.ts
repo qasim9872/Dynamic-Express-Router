@@ -1,4 +1,5 @@
-import { normalizeFileName } from "./utils/helper"
+import { methods } from "./supported-methods"
+import { getNormalizedRouteName } from "./utils/helper"
 import { createDebugger } from "./utils/debug"
 import { isFunction, isArray } from "is-what"
 
@@ -21,7 +22,16 @@ export interface FileStruct {
 
 export function getRequestTypeFromKey(key: string, keyword: string) {
     // Extract request type from key
-    return key.toLowerCase().replace(keyword, "")
+    const name = key.toLowerCase().replace(keyword, "")
+
+    let methodEnum = Object.keys(methods).find((method: string) => method.toLowerCase() === name)
+
+    if (!methodEnum) {
+        // Use default requestType
+        methodEnum = methods.GET
+    }
+
+    return methodEnum.toLowerCase()
 }
 
 export function parseExportedMember(key: string, exportedMember: any) {
@@ -93,7 +103,7 @@ export default async function parseRouteFile(pathToFile: string, fileName: strin
     const file: any = await import(pathToFile)
     debug(`parsing file at path: ${pathToFile}`)
 
-    const routeName = `/${normalizeFileName(fileName)}`
+    const routeName = getNormalizedRouteName(fileName)
     debug(`route name: ${routeName}`)
 
     const keys = Object.keys(file)
