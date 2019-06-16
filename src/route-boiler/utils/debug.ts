@@ -1,6 +1,6 @@
 import * as debug from "debug"
 
-export function extractNameFromPath(filePath: string): string {
+function extractNameFromPath(filePath: string): string {
     const extractedName = filePath.match(/.*\/(.*)\./)
     return extractedName ? extractedName[1] : filePath
 }

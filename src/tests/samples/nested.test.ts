@@ -28,7 +28,17 @@ describe(`sample: nested scenario`, () => {
         })
     })
 
-    it(`should GET /dynamic/id route`, async done => {
+    it(`should GET /nested/:dynamic/:id route`, async done => {
+        const dynamic = "1"
+        const id = "2"
+        server.get(`/nested/${dynamic}/${id}`).expect(200, (err, res) => {
+            expect(res.body.dynamic).toBe(dynamic)
+            expect(res.body.id).toBe(id)
+            done(err)
+        })
+    })
+
+    it(`should GET /dynamic/:id route`, async done => {
         const id = "12345"
         server.get(`/dynamic/${id}`).expect(200, (err, res) => {
             expect(res.body.id).toBe(id)

@@ -5,7 +5,7 @@ import { isFunction, isArray } from "is-what"
 
 const debug = createDebugger(__filename)
 
-export interface Route {
+interface Route {
     requestType: string
     middlewares?: string[]
     handler?: Function
@@ -16,11 +16,11 @@ export interface ParsedRoutes {
     routes: Route[]
 }
 
-export interface FileStruct {
+interface FileStruct {
     [key: string]: any
 }
 
-export function getRequestTypeFromKey(key: string) {
+function getRequestTypeFromKey(key: string) {
     const name = key.trim().toLowerCase()
 
     // Check if method name exists within the key
@@ -33,7 +33,7 @@ export function getRequestTypeFromKey(key: string) {
     return methodEnum.toLowerCase()
 }
 
-export function parseExportedMember(key: string, exportedMember: any) {
+function parseExportedMember(key: string, exportedMember: any) {
     const requestType = getRequestTypeFromKey(key)
 
     if (isFunction(exportedMember)) {
@@ -51,7 +51,7 @@ export function parseExportedMember(key: string, exportedMember: any) {
     }
 }
 
-export function parseFileStructure(pathToFile: string, file: any, keys: string[]) {
+function parseFileStructure(pathToFile: string, file: any, keys: string[]) {
     const fileStruct: FileStruct = {}
 
     for (const key of keys) {
@@ -82,11 +82,11 @@ export function parseFileStructure(pathToFile: string, file: any, keys: string[]
     return fileStruct
 }
 
-export function validateRouteObject(route: any) {
+function validateRouteObject(route: any) {
     return isFunction(route.handler) || (isArray(route.middlewares) && route.middlewares.length > 0)
 }
 
-export function createRoutesFromFileStruct(fileStruct: FileStruct) {
+function createRoutesFromFileStruct(fileStruct: FileStruct) {
     const routes: Route[] = []
 
     // Add the routes in the order defined by the enum

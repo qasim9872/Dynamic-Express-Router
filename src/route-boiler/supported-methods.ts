@@ -1,5 +1,5 @@
 export enum methods {
-    ALL = "ALL",
+    ALL = "ALL", // Ordered by priority
     GET = "GET",
     POST = "POST",
     PUT = "PUT",

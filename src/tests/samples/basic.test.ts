@@ -22,14 +22,20 @@ describe(`sample: basic scenario`, () => {
         })
     })
 
-    it(`should GET /default route`, async done => {
-        server.get("/default").expect(200, err => {
+    it(`should POST /basic route`, async done => {
+        server.post("/basic").expect(200, err => {
             done(err)
         })
     })
 
-    it(`should POST /basic route`, async done => {
-        server.post("/basic").expect(200, err => {
+    it(`should PUT /basic route`, async done => {
+        server.put("/basic").expect(200, err => {
+            done(err)
+        })
+    })
+
+    it(`should DELETE /basic route`, async done => {
+        server.delete("/basic").expect(200, err => {
             done(err)
         })
     })

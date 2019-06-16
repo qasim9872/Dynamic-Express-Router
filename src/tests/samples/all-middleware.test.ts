@@ -16,42 +16,57 @@ describe(`sample: all middleware scenario`, () => {
         done()
     })
 
-    it(`should GET /basic route`, async done => {
-        server.get("/basic").expect(200, (err, res) => {
-            done(err)
+    describe(`configure basic route`, () => {
+        const route = "/basic"
+        it(`should GET ${route} route`, async done => {
+            server.get(route).expect(200, (err, res) => {
+                done(err)
+            })
+        })
+
+        it(`should hit the all middleware and return 500`, async done => {
+            server
+                .get(route)
+                .query({ error: true })
+                .expect(500, (err, res) => {
+                    done(err)
+                })
+        })
+
+        it(`should POST ${route} route`, async done => {
+            server.post(route).expect(200, (err, res) => {
+                done(err)
+            })
+        })
+
+        it(`should hit the all middleware and return 500`, async done => {
+            server
+                .post(route)
+                .query({ error: true })
+                .expect(500, (err, res) => {
+                    done(err)
+                })
+        })
+
+        it(`should hit the post middleware and return 500`, async done => {
+            server
+                .post(route)
+                .send({ error: true })
+                .expect(500, (err, res) => {
+                    done(err)
+                })
         })
     })
 
-    it(`should POST /basic route`, async done => {
-        server.post("/basic").expect(200, (err, res) => {
-            done(err)
+    describe(`secondary route`, () => {
+        const route = "/secondary"
+        it(`should not have the all middleware configured`, async done => {
+            server
+                .get(route)
+                .send({ error: true })
+                .expect(200, (err, res) => {
+                    done(err)
+                })
         })
-    })
-
-    it(`should hit the all middleware and return 500`, async done => {
-        server
-            .get("/basic")
-            .query({ error: true })
-            .expect(500, (err, res) => {
-                done(err)
-            })
-    })
-
-    it(`should hit the all middleware and return 500`, async done => {
-        server
-            .post("/basic")
-            .query({ error: true })
-            .expect(500, (err, res) => {
-                done(err)
-            })
-    })
-
-    it(`should hit the post middleware and return 500`, async done => {
-        server
-            .post("/basic")
-            .send({ error: true })
-            .expect(500, (err, res) => {
-                done(err)
-            })
     })
 })

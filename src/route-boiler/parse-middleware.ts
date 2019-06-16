@@ -4,7 +4,7 @@ import { isFunction } from "is-what"
 
 const debug = createDebugger(__filename)
 
-export function getMiddlewareFunction(pathToFile: string, file: any, keys: string[]) {
+function getMiddlewareFunction(pathToFile: string, file: any, keys: string[]) {
     let middlewareFn: Function | null = null
 
     for (const key of keys) {

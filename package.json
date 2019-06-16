@@ -14,7 +14,8 @@
         "lint": "eslint --fix 'src/**/*.{ts,tsx}'",
         "dev": "DEBUG=route-boiler:* nodemon",
         "commit": "git-cz",
-        "release": "standard-version"
+        "release": "standard-version",
+        "docs": "typedoc --out docs src/route-boiler"
     },
     "repository": {
         "type": "git",
@@ -56,8 +57,11 @@
         "ts-jest": "^24.0.2",
         "ts-node": "^8.2.0",
         "tslint": "^5.17.0",
+        "typedoc": "^0.14.2",
         "typescript": "^3.5.2",
-        "typescript-eslint-parser": "^22.0.0"
+        "typescript-eslint-parser": "^22.0.0",
+        "eslint-config-prettier": "^5.0.0",
+        "eslint-plugin-prettier": "^3.1.0"
     },
     "lint-staged": {
         "*.ts": [
@@ -88,8 +92,6 @@
         "body-parser": "^1.19.0",
         "chalk": "^2.4.2",
         "debug": "^4.1.1",
-        "eslint-config-prettier": "^5.0.0",
-        "eslint-plugin-prettier": "^3.1.0",
         "express": "^4.17.1",
         "express-promise-router": "^3.0.3",
         "fs-extra": "^8.0.1",
