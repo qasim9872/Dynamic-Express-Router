@@ -1,22 +1,23 @@
 import * as supertest from "supertest"
 import basicWithMiddlewareApp from "../../samples/basic-with-middleware"
 
-describe(`sample: basic scenario`, () => {
-    it(`should GET /basic route`, async done => {
+describe(`sample: basic with middleware scenario`, () => {
+    let server: supertest.SuperTest<supertest.Test>
+
+    beforeAll(async done => {
         const app = await basicWithMiddlewareApp()
 
-        const server = supertest(app)
+        server = supertest(app)
+        done()
+    })
 
+    it(`should GET /basic route`, async done => {
         server.get("/basic").expect(200, (err, res) => {
             done(err)
         })
     })
 
     it(`should hit the middleware and return 500`, async done => {
-        const app = await basicWithMiddlewareApp()
-
-        const server = supertest(app)
-
         server
             .get("/basic")
             .query({ error: true })
