@@ -5,7 +5,7 @@ node_js:
     - stable
 before_install:
     - npm i -g yarn
-    - yarn --version
+    - yarn
 
 script:
     - yarn test-only
