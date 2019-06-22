@@ -62,7 +62,7 @@ async function loadRoutes(
             const subRouterPath = getNormalizedRouteName(file)
             const subRouter = await loadRoutes(filePath, middlewares, config, path + subRouterPath)
             router.use(subRouterPath, subRouter)
-        } else if (isFileNameAllowed(file, config.fileExtensions)) {
+        } else if (isFileNameAllowed(file, config)) {
             const routeConfig = await parseRouteFile(filePath, file)
             setRoute(router, middlewares, routeConfig, path)
         }
@@ -77,7 +77,7 @@ async function loadMiddlewares(pathToFolder: string, config: Config) {
     // only load middlewares if directory exists
     if (await fse.pathExists(pathToFolder)) {
         const files = await fse.readdir(pathToFolder)
-        const filteredFiles = files.filter(file => isFileNameAllowed(file, config.fileExtensions))
+        const filteredFiles = files.filter(file => isFileNameAllowed(file, config))
 
         for (const file of filteredFiles) {
             const filePath = join(pathToFolder, file)

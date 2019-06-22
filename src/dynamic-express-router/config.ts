@@ -6,12 +6,14 @@ export interface UserConfig {
     middlewares?: string
     routes?: string
     fileExtensions?: string[]
+    filters?: RegExp[]
 }
 
 export interface Config extends UserConfig {
     middlewares: string
     routes: string
     fileExtensions: string[]
+    filters: RegExp[]
 }
 
 function getDefaultConfig(): Config {
@@ -19,7 +21,8 @@ function getDefaultConfig(): Config {
         baseDir: process.cwd(),
         middlewares: "./middlewares",
         routes: "./routes",
-        fileExtensions: [".ts", ".js"]
+        fileExtensions: [".ts", ".js"],
+        filters: [/\.d\.ts$/]
     }
 }
 

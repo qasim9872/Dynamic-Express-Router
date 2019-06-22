@@ -26,7 +26,8 @@ export default async function setup() {
         baseDir: __dirname, // required
         middlewares: "./middlewares", // default - relative to baseDir
         routes: "./routes", // default - relative to baseDir
-        fileExtensions: [".ts", ".js"] // default
+        fileExtensions: [".ts", ".js"], // default
+        filters: [/\.d\.ts$/] // default - ignore type files
     })
     app.use(router)
 

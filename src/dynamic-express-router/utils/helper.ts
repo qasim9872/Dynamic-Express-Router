@@ -1,4 +1,5 @@
 import chalk from "chalk"
+import { Config } from "../config"
 
 const log = console.log
 
@@ -8,13 +9,29 @@ export function logRoute(requestType: string, path: string) {
     log(`${formatMethod(requestType.toUpperCase())}: ${path}`)
 }
 
-export function isFileNameAllowed(fileName: string, extensions: string[]) {
+function checkFileExtension(fileName: string, extensions: string[]) {
     for (const ext of extensions) {
-        if (fileName.includes(ext)) {
+        if (fileName.endsWith(ext)) {
             return true
         }
     }
     return false
+}
+
+function nameMatchesFilter(fileName: string, filters: RegExp[]) {
+    for (const reg of filters) {
+        if (reg.test(fileName)) {
+            return true
+        }
+    }
+    return false
+}
+
+export function isFileNameAllowed(fileName: string, config: Config) {
+    const extensions = config.fileExtensions
+    const filters = config.filters
+
+    return checkFileExtension(fileName, extensions) && !nameMatchesFilter(fileName, filters)
 }
 
 export function normalizeFileName(name: string): string {

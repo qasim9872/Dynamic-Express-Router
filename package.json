@@ -11,7 +11,7 @@
         "test": "jest",
         "test-only": "jest",
         "staged-test": "yarn test --bail --findRelatedTests",
-        "clean": "shx rm -rf node_modules/ dist/ docs/",
+        "clean": "shx rm -rf node_modules/ lib/ docs/",
         "pretty-base": "prettier '*.{ts, js, json}' '{src,tests}/**/*.ts'",
         "format": "yarn pretty-base --write",
         "lint": "eslint --fix 'src/**/*.{ts,tsx}'",
