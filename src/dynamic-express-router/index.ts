@@ -53,6 +53,7 @@ async function loadRoutes(
     await fse.ensureDir(pathToFolder)
 
     const files = await fse.readdir(pathToFolder)
+    debug(`reading directory with path: ${pathToFolder}`)
 
     for (const file of files) {
         const filePath = join(pathToFolder, file)
@@ -65,6 +66,8 @@ async function loadRoutes(
         } else if (isFileNameAllowed(file, config)) {
             const routeConfig = await parseRouteFile(filePath, file)
             setRoute(router, middlewares, routeConfig, path)
+        } else {
+            debug(`Ignoring file: ${file}`)
         }
     }
 
@@ -82,6 +85,7 @@ async function loadMiddlewares(pathToFolder: string, config: Config) {
         for (const file of filteredFiles) {
             const filePath = join(pathToFolder, file)
             const middleware = await parseMiddlewareFile(filePath, file)
+            debug(`loading middleware with name: ${middleware.name}`)
 
             middlewares[middleware.name] = middleware.middlewareFn
         }
