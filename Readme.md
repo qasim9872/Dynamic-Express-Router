@@ -97,6 +97,14 @@ Will Generate the following routes
 
 ```
 
+## Debugging
+
+set environment variable to below when running your application.
+
+```cli
+DEBUG=dynamic-express-router:\*
+```
+
 ## Changelog
 
 See changelog.md
