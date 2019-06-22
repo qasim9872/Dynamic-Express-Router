@@ -1,10 +1,18 @@
 tsconfig.json
 .travis.yml
+.npmignore
 .nojekyll
+
+.vscode/
 src/
 docs/
-lib/test/
-.npmignore
+coverage/
+
+lib/tests/
+lib/samples/
+
+jest.config.js
+commitlint.config.js
 
 // npm pack
 {YOUR_LIB}-*.tgz
