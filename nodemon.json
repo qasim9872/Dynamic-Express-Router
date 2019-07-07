@@ -1,5 +1,5 @@
 {
     "ext": "ts",
-    "watch": "lib",
-    "exec": "ts-node lib"
+    "watch": "src",
+    "exec": "ts-node src"
 }

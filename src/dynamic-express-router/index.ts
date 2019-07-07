@@ -1,4 +1,5 @@
 import * as fse from "fs-extra"
+import { isString } from "is-what"
 import * as express from "express"
 import Router from "express-promise-router"
 import { getConfig, UserConfig, Config } from "./config"
@@ -20,13 +21,25 @@ async function setRoute(
     const routes = routesConfig.routes
     for (const route of routes) {
         const handlers: Function[] = route.middlewares
-            ? route.middlewares.map((name: string) => {
-                  const middleware = middlewares[name]
-                  if (!middleware) {
-                      throw new Error(`cannot find middleware with name: ${name} used in ${routeName}`)
-                  }
-                  return middleware
-              })
+            ? await Promise.all(
+                  route.middlewares.map(async (nameOrData: any) => {
+                      let name: string
+                      let data: any
+                      if (isString(nameOrData)) {
+                          name = nameOrData
+                      } else {
+                          name = nameOrData.name
+                          data = nameOrData.data
+                      }
+
+                      const middleware = middlewares[name]
+                      if (!middleware) {
+                          throw new Error(`cannot find middleware with name: ${name} used in ${routeName}`)
+                      }
+
+                      return data ? await middleware(data) : middleware
+                  })
+              )
             : []
 
         if (route.handler) {

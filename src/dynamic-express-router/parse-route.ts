@@ -5,9 +5,11 @@ import { isFunction, isArray } from "is-what"
 
 const debug = createDebugger(__filename)
 
+type middleware = string | object
+
 interface Route {
     requestType: string
-    middlewares?: string[]
+    middlewares?: middleware[]
     handler?: Function
 }
 
