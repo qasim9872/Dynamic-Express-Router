@@ -98,7 +98,6 @@
         "express": "^4.17.1",
         "express-promise-router": "^3.0.3",
         "fs-extra": "^8.0.1",
-        "is-what": "^3.2.3",
-        "merge-json": "^0.1.0-b.3"
+        "is-what": "^3.2.3"
     }
 }

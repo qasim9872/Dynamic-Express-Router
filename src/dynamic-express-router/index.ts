@@ -77,7 +77,7 @@ async function loadRoutes(
             const subRouter = await loadRoutes(filePath, middlewares, config, path + subRouterPath)
             router.use(subRouterPath, subRouter)
         } else if (isFileNameAllowed(file, config)) {
-            const routeConfig = await parseRouteFile(filePath, file)
+            const routeConfig = await parseRouteFile(filePath, file, config)
             setRoute(router, middlewares, routeConfig, path)
         } else {
             debug(`Ignoring file: ${file}`)

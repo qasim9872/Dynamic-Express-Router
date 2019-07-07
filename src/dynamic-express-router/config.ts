@@ -1,12 +1,10 @@
-// eslint-disable-next-line
-const { merge } = require("merge-json")
-
 export interface UserConfig {
     baseDir: string
     middlewares?: string
     routes?: string
     fileExtensions?: string[]
     filters?: RegExp[]
+    generateRouteName?: (normalizedFileName: string) => string
 }
 
 export interface Config extends UserConfig {
@@ -16,16 +14,13 @@ export interface Config extends UserConfig {
     filters: RegExp[]
 }
 
-function getDefaultConfig(): Config {
-    return {
-        baseDir: process.cwd(),
-        middlewares: "./middlewares",
-        routes: "./routes",
-        fileExtensions: [".ts", ".js"],
-        filters: [/\.d\.ts$/]
-    }
-}
-
 export function getConfig(config: UserConfig): Config {
-    return merge(getDefaultConfig(), config)
+    return {
+        baseDir: config.baseDir,
+        middlewares: config.middlewares || "./middlewares",
+        routes: config.routes || "./routes",
+        fileExtensions: config.fileExtensions || [".ts", ".js"],
+        filters: config.filters || [/\.d\.ts$/],
+        generateRouteName: config.generateRouteName
+    }
 }

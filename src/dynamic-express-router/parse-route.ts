@@ -1,3 +1,4 @@
+import { Config } from "./config"
 import { methods } from "./supported-methods"
 import { getNormalizedRouteName } from "./utils/helper"
 import { createDebugger } from "./utils/debug"
@@ -105,11 +106,16 @@ function createRoutesFromFileStruct(fileStruct: FileStruct) {
     return routes
 }
 
-export default async function parseRouteFile(pathToFile: string, fileName: string): Promise<ParsedRoutes> {
+export default async function parseRouteFile(
+    pathToFile: string,
+    fileName: string,
+    config: Config
+): Promise<ParsedRoutes> {
     const file: any = await import(pathToFile)
     debug(`parsing file at path: ${pathToFile}`)
 
-    const routeName = getNormalizedRouteName(fileName)
+    let routeName = getNormalizedRouteName(fileName)
+    routeName = config.generateRouteName ? config.generateRouteName(routeName) : routeName
     debug(`route name: ${routeName}`)
 
     const keys = Object.keys(file)
