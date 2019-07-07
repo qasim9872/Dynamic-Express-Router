@@ -16,9 +16,19 @@ describe(`sample: filter extensions scenario`, () => {
         done()
     })
 
-    it(`should GET /basic route`, async done => {
-        server.get("/basic").expect(200, err => {
-            done(err)
+    describe(`basic route`, () => {
+        it(`should GET /basic route`, async done => {
+            server.get("/basic").expect(200, err => {
+                done(err)
+            })
+        })
+    })
+
+    describe(`nested route`, () => {
+        it(`should GET /nested route`, async done => {
+            server.get("/nested").expect(200, err => {
+                done(err)
+            })
         })
     })
 })

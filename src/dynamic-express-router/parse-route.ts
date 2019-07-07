@@ -114,8 +114,7 @@ export default async function parseRouteFile(
     const file: any = await import(pathToFile)
     debug(`parsing file at path: ${pathToFile}`)
 
-    let routeName = getNormalizedRouteName(fileName)
-    routeName = config.generateRouteName ? config.generateRouteName(routeName) : routeName
+    let routeName = getNormalizedRouteName(fileName, config.generateRouteName)
     debug(`route name: ${routeName}`)
 
     const keys = Object.keys(file)
