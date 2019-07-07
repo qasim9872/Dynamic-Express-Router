@@ -1,6 +1,6 @@
 {
     "name": "dynamic-express-router",
-    "version": "0.4.0",
+    "version": "0.4.1",
     "description": "A package that allows setting up routes dynamically",
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
