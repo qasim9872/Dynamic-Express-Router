@@ -1,6 +1,6 @@
 import { normalizeFileName } from "./utils/helper"
 import { createDebugger } from "./utils/debug"
-import { isFunction } from "is-what"
+import { getType } from "is-what"
 
 const debug = createDebugger(__filename)
 
@@ -10,7 +10,7 @@ function getMiddlewareFunction(pathToFile: string, file: any, keys: string[]) {
     for (const key of keys) {
         const exportedMember = file[key]
 
-        if (isFunction(exportedMember)) {
+        if (getType(exportedMember).includes("Function")) {
             middlewareFn = exportedMember
             break
         }

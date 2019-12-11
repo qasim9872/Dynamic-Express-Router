@@ -2,7 +2,7 @@ import { Config } from "./config"
 import { methods } from "./supported-methods"
 import { getNormalizedRouteName } from "./utils/helper"
 import { createDebugger } from "./utils/debug"
-import { isFunction, isArray } from "is-what"
+import { isArray, getType } from "is-what"
 
 const debug = createDebugger(__filename)
 
@@ -39,7 +39,7 @@ function getRequestTypeFromKey(key: string) {
 function parseExportedMember(key: string, exportedMember: any) {
     const requestType = getRequestTypeFromKey(key)
 
-    if (isFunction(exportedMember)) {
+    if (getType(exportedMember).includes("Function")) {
         // request handler
         return {
             requestType,
@@ -86,7 +86,7 @@ function parseFileStructure(pathToFile: string, file: any, keys: string[]) {
 }
 
 function validateRouteObject(route: any) {
-    return isFunction(route.handler) || (isArray(route.middlewares) && route.middlewares.length > 0)
+    return getType(route.handler).includes("Function") || (isArray(route.middlewares) && route.middlewares.length > 0)
 }
 
 function createRoutesFromFileStruct(fileStruct: FileStruct) {
