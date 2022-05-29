@@ -63,7 +63,10 @@ async function loadRoutes(
     })
 
     // ensure directory exists
-    await fse.ensureDir(pathToFolder)
+    await /* TODO: JSFIX could not patch the breaking change:
+    Creating a directory with fs-extra no longer returns the path 
+    Suggested fix: The returned promise no longer includes the path of the new directory */
+    fse.ensureDir(pathToFolder)
 
     const files = await fse.readdir(pathToFolder)
     debug(`reading directory with path: ${pathToFolder}`)
